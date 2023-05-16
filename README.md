@@ -1,2 +1,2 @@
-# binary-serach-tree
+# binary-search-tree
 Ruby exercise building a binary search tree. See https://www.theodinproject.com/lessons/ruby-binary-search-trees
