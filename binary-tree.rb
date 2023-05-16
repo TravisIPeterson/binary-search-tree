@@ -76,6 +76,16 @@ class Tree
         value < node.data ? find(value, node.left) : find(value, node.right)
     end
 
+    def level_order(node = root, queue = [])
+        puts "#{node.data}"
+
+        queue << node.left unless node.left.nil?
+        queue << node.right unless node.right.nil?
+
+        return if queue.empty?
+        level_order(queue.shift, queue)
+    end
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -105,3 +115,5 @@ puts tree.pretty_print
 p tree.find(37)
 
 p tree.find(107)
+
+p tree.level_order
