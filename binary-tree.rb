@@ -116,6 +116,42 @@ class Tree
         output
     end
 
+    def height(node = root, int = -1)
+        return int if node.nil?
+
+        int += 1
+        [height(node.left, int), height(node.right, int)].max
+    end
+
+    def depth(node)
+        return nil if node.nil?
+
+        checked_node = @root
+        int = 0
+        until checked_node.data == node
+            int += 1
+            node < checked_node.data ? checked_node = checked_node.left : checked_node = checked_node.right
+        end
+        int
+    end
+
+    def balanced?(node = root)
+        left_height = height(node.left, 0)
+        right_height = height(node.right, 0)
+        return true if (left_height - right_height).between?(-1, 1)
+        false
+    end
+
+    def rebalance
+        number_array = []
+
+        self.inorder do |node|
+            number_array << node.data
+        end
+        number_array.uniq!
+        @root = build_tree(number_array)
+    end
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -153,3 +189,23 @@ p tree.preorder
 p tree.inorder
 
 p tree.postorder
+
+p tree.height
+
+tree.insert(167)
+
+tree.insert(149)
+
+tree.insert(150)
+
+tree.insert(206)
+
+puts tree.pretty_print
+
+puts tree.balanced?
+
+tree.rebalance
+
+puts tree.pretty_print
+
+puts tree.balanced?
