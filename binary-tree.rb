@@ -86,6 +86,36 @@ class Tree
         level_order(queue.shift, queue)
     end
 
+    def preorder(node = root, output = [], &block)
+        return if node.nil?
+        
+        output.push(block_given? ? block.call(node) : node.data)
+        preorder(node.left, output, &block)
+        preorder(node.right, output, &block)
+
+        output
+    end
+
+    def inorder(node = root, output = [], &block)
+        return if node.nil?
+        
+        inorder(node.left, output, &block)
+        output.push(block_given? ? block.call(node) : node.data)
+        inorder(node.right, output, &block)
+
+        output
+    end
+
+    def postorder(node = root, output = [], &block)
+        return if node.nil?
+
+        postorder(node.left, output, &block)
+        postorder(node.right, output, &block)
+        output.push(block_given? ? block.call(node) : node.data)
+
+        output
+    end
+
     def pretty_print(node = @root, prefix = '', is_left = true)
         pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
         puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -117,3 +147,9 @@ p tree.find(37)
 p tree.find(107)
 
 p tree.level_order
+
+p tree.preorder
+
+p tree.inorder
+
+p tree.postorder
